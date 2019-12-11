@@ -8,6 +8,11 @@ import javax.persistence.*;
 @Getter @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString(of = {"id", "username", "age"}) //team같은 연관관계 필드는 toString 안하는게 좋음
+@NamedQuery(
+        name="Member.findByUsername",
+        query="select m from Member m where m.username = :username"
+)
+@NamedEntityGraph(name = "Member.all", attributeNodes = @NamedAttributeNode("team"))
 public class Member {
 
     @Id @GeneratedValue
@@ -27,6 +32,11 @@ public class Member {
 
    public Member(String username) {
         this.username = username;
+   }
+
+   public Member(String username, int age) {
+       this.username = username;
+       this.age = age;
    }
 
     public Member(String username, int age, Team team) {
